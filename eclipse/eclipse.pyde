@@ -1,46 +1,50 @@
-typing_search_year = "-1999"
-search_year = ""
+import search_bar as sb
+
 my_map = None
 lunar_arr = []
 solar_arr = []
 lunar_data = None
 solar_data = None
+searcher = None
+
 
 def setup():
     global my_map
     global lunar_data
     global solar_data
+    global searcher
     lunar_data = load_lunar_data("../data/lunar.csv")
     solar_data = load_solar_data("../data/solar.csv")
     
     size(1200,800)
     
     my_map = loadImage("../map/Map.jpg")
+    map_legend()
+    lunar_area_text()
+    solar_area_text()
+    searcher = sb.SearchBar()
     
 def draw():
     #Search bar
     global my_map
     global solar_arr
     global lunar_arr
-    
-    searchBar()
-    
+    global searcher
+        
     #Mapping
     image(my_map,300,20)
 
     map_lunar_points(lunar_arr)
     map_solar_points(solar_arr)
-    map_legend()
-
-    #lunar area
-    lunar_area_rect()
     solar_area_rect()
+    lunar_area_rect()
     
+    searcher.render()
+        
 def map_legend():
     #1050
     fill(0)
     circle(1060, 194, 14)
-    #textAlign(BOTTOM)
     text("Lunar Eclipses", 1070, 200)
     fill(255)
     circle(1060, 245, 14)
@@ -64,35 +68,27 @@ def solar_year(chosen_year):
         cal_year = row[1].split('/')
 
         if cal_year[0] == chosen_year:
-            solar_arr.append(row)
-    
-def searchBar():
-    global typing_search_year
-    textAlign(LEFT)
-    textSize(15)
-    fill(0,0,0)
-    text("Search for a Year", 20, 20)
-    fill(255,255,255)
-    rect(20,30,120,20)
-    fill(0,0,0)
-    text(typing_search_year,22,48,10)
-    
+            solar_arr.append(row)        
+
 def lunar_area_rect():
+    fill(255)
+    rect(300,450,300,300)
+
+def lunar_area_text():
     fill(0)
     textSize(30)
     textAlign(CENTER)
     text('Lunar',450,445)
-    fill(255)
-    rect(300,450,300,300)
     
 def solar_area_rect():
+    fill(255)
+    rect(750,450,300,300)
+
+def solar_area_text():
     fill(0)
     textSize(30)
     textAlign(CENTER)
     text('Solar',900,445)
-    fill(255)
-    rect(750,450,300,300)
-    
     
 def map_lunar_points(lunar_arr):
     #width 750
@@ -116,22 +112,20 @@ def map_solar_points(solar_arr):
         fill(255)
         circle(x_cord, y_cord,15)
 
+def mouseClicked():
+    searcher.handle_toggle_onclick(mouseX, mouseY)
+
 def keyPressed():
-    global typing_search_year
-    global search_year
-    global lunar_arr
-    global solar_arr
-    if key == "\n":
-        search_year = typing_search_year
-        typing_search_year = ""
-        lunar_year(search_year)
-        solar_year(search_year)
-        redraw()
-    elif key == '\b':
-        typing_search_year = typing_search_year[:-1]
-    else:
-        if ((key >= '0' and key <= '9') or key == '-') and len(typing_search_year) < 5:
-            typing_search_year = typing_search_year + key
+    if searcher.toggled:
+        if key == "\n":
+            lunar_year(searcher.cur_val)
+            solar_year(searcher.cur_val)
+            redraw()
+        elif key == '\b':
+            searcher.cur_val = searcher.cur_val[:-1]
+        else:
+            if ((key >= '0' and key <= '9') or key == '-') and len(searcher.cur_val) < searcher.max_chars:
+                searcher.cur_val = searcher.cur_val + key
 
 ######################
 #Cleaning and Loading
