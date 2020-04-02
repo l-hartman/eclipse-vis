@@ -1,4 +1,5 @@
 import search_bar as sb
+import lunar_pane as lp
 
 my_map = None
 lunar_arr = []
@@ -6,6 +7,8 @@ solar_arr = []
 lunar_data = None
 solar_data = None
 searcher = None
+lpaner = None
+draw_l_years = False
 
 
 def setup():
@@ -13,16 +16,16 @@ def setup():
     global lunar_data
     global solar_data
     global searcher
+    global lpaner
     lunar_data = load_lunar_data("../data/lunar.csv")
     solar_data = load_solar_data("../data/solar.csv")
     
     size(1200,800)
     
-    my_map = loadImage("../map/Map.jpg")
-    map_legend()
-    lunar_area_text()
-    solar_area_text()
+    my_map = loadImage("../images/Map.jpg")
+
     searcher = sb.SearchBar()
+    lpaner = lp.LunarPane(300,450,300,300)
     
 def draw():
     #Search bar
@@ -30,16 +33,25 @@ def draw():
     global solar_arr
     global lunar_arr
     global searcher
+    global lpaner
+    global draw_l_years
         
+    background(150)
     #Mapping
     image(my_map,300,20)
+    map_legend()
+    lunar_area_text()
+    solar_area_text()
 
     map_lunar_points(lunar_arr)
     map_solar_points(solar_arr)
     solar_area_rect()
-    lunar_area_rect()
-    
+
     searcher.render()
+    lpaner.render(lunar_arr)
+    if draw_l_years:
+        lpaner.year_eclipses()
+    lpaner.hover_check(mouseX,mouseY)
         
 def map_legend():
     #1050
@@ -69,10 +81,6 @@ def solar_year(chosen_year):
 
         if cal_year[0] == chosen_year:
             solar_arr.append(row)        
-
-def lunar_area_rect():
-    fill(255)
-    rect(300,450,300,300)
 
 def lunar_area_text():
     fill(0)
@@ -114,12 +122,15 @@ def map_solar_points(solar_arr):
 
 def mouseClicked():
     searcher.handle_toggle_onclick(mouseX, mouseY)
+    lpaner.handle_eclipse_onlick(mouseX,mouseY)
 
 def keyPressed():
+    global draw_l_years
     if searcher.toggled:
         if key == "\n":
             lunar_year(searcher.cur_val)
             solar_year(searcher.cur_val)
+            draw_l_years = True
             redraw()
         elif key == '\b':
             searcher.cur_val = searcher.cur_val[:-1]

@@ -49,8 +49,7 @@ class SearchBar(object):
         fill(0,0,0)
         
         # write title, should only draw this once
-        if not self.rendered:
-            text(self.title, 20, 20)
+        text(self.title, 20, 20)
     
         if self.toggled and self.cursor_timer.elapsed_time() > 1.0:
             text(self.cur_val + "|", 22, 48, 10)
