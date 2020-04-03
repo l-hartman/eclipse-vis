@@ -10,6 +10,8 @@ searcher = None
 lpaner = None
 draw_l_years = False
 
+zoom_in_lunar = [0]
+
 
 def setup():
     global my_map
@@ -35,6 +37,7 @@ def draw():
     global searcher
     global lpaner
     global draw_l_years
+    global zoom_in_lunar
         
     background(150)
     #Mapping
@@ -49,9 +52,15 @@ def draw():
 
     searcher.render()
     lpaner.render(lunar_arr)
+    
     if draw_l_years:
         lpaner.year_eclipses()
     lpaner.hover_check(mouseX,mouseY)
+    
+    if zoom_in_lunar[0] == 1:
+        zoom_in_lunar = lpaner.load_chosen_data(zoom_in_lunar[1], zoom_in_lunar[2], zoom_in_lunar[3], zoom_in_lunar[4], zoom_in_lunar[5])
+    elif zoom_in_lunar[0] == 2:
+        zoom_in_lunar = lpaner.keep_chosen_data(zoom_in_lunar[1], zoom_in_lunar[2], zoom_in_lunar[3], zoom_in_lunar[4], zoom_in_lunar[5])
         
 def map_legend():
     #1050
@@ -121,8 +130,9 @@ def map_solar_points(solar_arr):
         circle(x_cord, y_cord,15)
 
 def mouseClicked():
+    global zoom_in_lunar
     searcher.handle_toggle_onclick(mouseX, mouseY)
-    lpaner.handle_eclipse_onlick(mouseX,mouseY)
+    zoom_in_lunar = lpaner.handle_eclipse_onlick(mouseX, mouseY)
 
 def keyPressed():
     global draw_l_years
