@@ -125,8 +125,8 @@ class LunarPane(object):
             e_type = data[6]
         else:
             e_type = data[6][0]
-        print(e_type)
         
+        #Display moon position
         if e_type == 'T':
             image(self.moon, 473 , 560, sizeX_moon,sizeY_moon)
         elif e_type == 'P':
@@ -134,7 +134,6 @@ class LunarPane(object):
         else:
             image(self.moon, 485 , 590, sizeX_moon,sizeY_moon)
         
-        #P - Partial, T - total, N - prenumbral
         
         return [2,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
        
