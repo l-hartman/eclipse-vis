@@ -1,3 +1,4 @@
+import description_pane as dp
 import search_bar as sb
 import lunar_pane as lp
 
@@ -9,6 +10,7 @@ solar_data = None
 searcher = None
 lpaner = None
 draw_l_years = False
+dpane = None
 
 
 def setup():
@@ -17,6 +19,8 @@ def setup():
     global solar_data
     global searcher
     global lpaner
+    global dpane
+    
     lunar_data = load_lunar_data("../data/lunar.csv")
     solar_data = load_solar_data("../data/solar.csv")
     
@@ -26,6 +30,7 @@ def setup():
 
     searcher = sb.SearchBar()
     lpaner = lp.LunarPane(300,450,300,300)
+    dpane = dp.DescriptionPane(20, 70, 250, 330)
     
 def draw():
     #Search bar
@@ -35,6 +40,7 @@ def draw():
     global searcher
     global lpaner
     global draw_l_years
+    global dpane
         
     background(150)
     #Mapping
@@ -47,6 +53,7 @@ def draw():
     map_solar_points(solar_arr)
     solar_area_rect()
 
+    dpane.render()
     searcher.render()
     lpaner.render(lunar_arr)
     if draw_l_years:
@@ -107,7 +114,9 @@ def map_lunar_points(lunar_arr):
         x_cord = map(float(longitude), -180, 180, 300, 1050)
         y_cord = map(float(latitude), -90, 90, 20, 397)
         fill(0)
-        circle(x_cord, y_cord,15)
+        circle(x_cord, y_cord, 15)
+        if over_eclipse(x_cord, y_cord, 15) and row[0] != dpane.cur_id:
+            dpane.update(row, "lunar")
     
 def map_solar_points(solar_arr):
     #width 750
@@ -119,6 +128,8 @@ def map_solar_points(solar_arr):
         y_cord = map(float(latitude), -90, 90, 20, 397)
         fill(255)
         circle(x_cord, y_cord,15)
+        if over_eclipse(x_cord, y_cord, 15) and row[0] != dpane.cur_id:
+            dpane.update(row, "solar")
 
 def mouseClicked():
     searcher.handle_toggle_onclick(mouseX, mouseY)
@@ -138,6 +149,16 @@ def keyPressed():
             if ((key >= '0' and key <= '9') or key == '-') and len(searcher.cur_val) < searcher.max_chars:
                 searcher.cur_val = searcher.cur_val + key
 
+
+
+def over_eclipse(x, y, diameter):
+  dis_x = x - mouseX
+  dis_y = y - mouseY
+  if sqrt(dis_x*dis_x + dis_y*dis_y) < diameter/2:
+    return True
+  else:
+    return False
+
 ######################
 #Cleaning and Loading
 ######################
@@ -150,7 +171,6 @@ def load_solar_data(filename):
             row = row.split(',')
             if x == 0:
                 pass
-                #table.append(row)
             else:
                 cal_date = row[1].split()
                 row[1] = cal_date[0] + '/' + str(month_to_num(cal_date[1])) + '/' + str(cal_date[2])
@@ -172,7 +192,6 @@ def load_lunar_data(filename):
             row = row.split(',')
             if x == 0:
                 pass
-                #table.append(row)
             else:
                 cal_date = row[1].split()
                 row[1] = cal_date[0] + '/' + str(month_to_num(cal_date[1])) + '/' + str(cal_date[2])
