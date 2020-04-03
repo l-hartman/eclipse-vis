@@ -9,7 +9,7 @@ class LunarPane(object):
         self.space = loadImage("../images/space.jpg")
         
         self.moon = loadImage("../images/Moon.png")
-        self.moon_x_y = [560,700]
+        #self.moon_x_y = [560,700]
         
         self.earth = loadImage("../images/Earth.png")
         self.earth_x_y = [300, 460]
@@ -60,7 +60,7 @@ class LunarPane(object):
                  #self.lunar_data[x] is chosen data    
                  sizeX_sun, sizeY_sun = 150, 150
                  sizeX_earth, sizeY_earth = 50, 50
-                 sizeX_moon, sizeY_moon = 30,30
+                 sizeX_moon, sizeY_moon = 15,15
                  self.sun_x_y = [300,600]
                  self.earth_x_y = [300, 460]
                  
@@ -74,10 +74,7 @@ class LunarPane(object):
         #long 12
         #eclipse type #6
         
-        if len(data[6]) == 1:
-            e_type = data[6]
-        else:
-            e_type = data[6][0]
+
         
         time = millis()
         while self.total_wait > 0:
@@ -98,7 +95,7 @@ class LunarPane(object):
              image(self.earth,self.earth_x_y[0],self.earth_x_y[1],sizeX_earth,sizeY_earth)
              
              #move moon in a circle
-             image(self.moon,self.moon_x_y[0],self.moon_x_y[1],sizeX_moon,sizeY_moon)
+             #image(self.moon,self.moon_x_y[0],self.moon_x_y[1],sizeX_moon,sizeY_moon)
         
              
              return [1, data, sizeX_sun, sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
@@ -110,7 +107,35 @@ class LunarPane(object):
     def keep_chosen_data(self,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon):
         image(self.sun,self.sun_x_y[0],self.sun_x_y[1],sizeX_sun,sizeY_sun)
         image(self.earth,self.earth_x_y[0],self.earth_x_y[1],sizeX_earth,sizeY_earth)
-        image(self.moon,self.moon_x_y[0],self.moon_x_y[1],sizeX_moon,sizeY_moon)
+        
+
+        
+        #draw Penumbra lines
+        stroke(255)
+        
+        line(self.sun_x_y[0], self.sun_x_y[1]+36, 600, 450) 
+        line(self.sun_x_y[0] + sizeX_sun-35, 750, 584, 450)
+        
+        #draw umbra lines
+        line(self.sun_x_y[0], self.sun_x_y[1]+22, 600, 577)
+        line(self.sun_x_y[0] + sizeX_sun-23, 750, 465, 450)
+        
+        #See where to draw moon
+        if len(data[6]) == 1:
+            e_type = data[6]
+        else:
+            e_type = data[6][0]
+        print(e_type)
+        
+        if e_type == 'T':
+            image(self.moon, 473 , 560, sizeX_moon,sizeY_moon)
+        elif e_type == 'P':
+            image(self.moon, 480 , 575, sizeX_moon,sizeY_moon)
+        else:
+            image(self.moon, 485 , 590, sizeX_moon,sizeY_moon)
+        
+        #P - Partial, T - total, N - prenumbral
+        
         return [2,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
        
         
