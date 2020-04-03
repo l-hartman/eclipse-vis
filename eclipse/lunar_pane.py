@@ -7,10 +7,12 @@ class LunarPane(object):
         self.lunar_data = []
         self.eclipse_text = []
         self.space = loadImage("../images/space.jpg")
+        
         self.moon = loadImage("../images/Moon.png")
+        self.moon_x_y = [560,700]
         
         self.earth = loadImage("../images/Earth.png")
-        self.earth_x_y = [230,420]
+        self.earth_x_y = [300, 460]
         
         self.sun = loadImage("../images/Sun.png")
         self.sun_x_y = [300,600]
@@ -57,15 +59,17 @@ class LunarPane(object):
             if mX > self.eclipse_text[x][0] and mX < self.eclipse_text[x][0] + 70 and mY > self.eclipse_text[x][1] - 15 and mY < self.eclipse_text[x][1] + 15:
                  #self.lunar_data[x] is chosen data    
                  sizeX_sun, sizeY_sun = 150, 150
-                 sizeX_earth, sizeY_earth = 300,200
+                 sizeX_earth, sizeY_earth = 50, 50
+                 sizeX_moon, sizeY_moon = 30,30
                  self.sun_x_y = [300,600]
-               
-                 return [1, self.lunar_data[x], sizeX_sun, sizeY_sun, sizeX_earth, sizeY_earth]
+                 self.earth_x_y = [300, 460]
+                 
+                 return [1, self.lunar_data[x], sizeX_sun, sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
                  
         return [0]
                 
                 
-    def load_chosen_data(self,data, sizeX_sun, sizeY_sun, sizeX_earth, sizeY_earth):
+    def load_chosen_data(self,data, sizeX_sun, sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon):
         #lat 11
         #long 12
         #eclipse type #6
@@ -88,21 +92,26 @@ class LunarPane(object):
              self.sun_x_y[1] += .5
              image(self.sun,self.sun_x_y[0],self.sun_x_y[1],sizeX_sun,sizeY_sun)
              
-             #image(self.moon,80,600,sizeX,sizeY)
-             
+        
+             self.earth_x_y[0] += 1.2
+             self.earth_x_y[1] += 1.2
              image(self.earth,self.earth_x_y[0],self.earth_x_y[1],sizeX_earth,sizeY_earth)
-             #sizeX_earth -=
              
-             return [1, data, sizeX_sun, sizeY_sun, sizeX_earth, sizeY_earth]
+             #move moon in a circle
+             image(self.moon,self.moon_x_y[0],self.moon_x_y[1],sizeX_moon,sizeY_moon)
+        
+             
+             return [1, data, sizeX_sun, sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
                 
         
         self.total_wait = 100
-        return [2, data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth]
+        return [2, data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
     
-    def keep_chosen_data(self,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth):
+    def keep_chosen_data(self,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon):
         image(self.sun,self.sun_x_y[0],self.sun_x_y[1],sizeX_sun,sizeY_sun)
         image(self.earth,self.earth_x_y[0],self.earth_x_y[1],sizeX_earth,sizeY_earth)
-        return [2,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth]
+        image(self.moon,self.moon_x_y[0],self.moon_x_y[1],sizeX_moon,sizeY_moon)
+        return [2,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
        
         
 

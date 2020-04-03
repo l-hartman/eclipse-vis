@@ -58,9 +58,9 @@ def draw():
     lpaner.hover_check(mouseX,mouseY)
     
     if zoom_in_lunar[0] == 1:
-        zoom_in_lunar = lpaner.load_chosen_data(zoom_in_lunar[1], zoom_in_lunar[2], zoom_in_lunar[3], zoom_in_lunar[4], zoom_in_lunar[5])
+        zoom_in_lunar = lpaner.load_chosen_data(zoom_in_lunar[1], zoom_in_lunar[2], zoom_in_lunar[3], zoom_in_lunar[4], zoom_in_lunar[5], zoom_in_lunar[6], zoom_in_lunar[7])
     elif zoom_in_lunar[0] == 2:
-        zoom_in_lunar = lpaner.keep_chosen_data(zoom_in_lunar[1], zoom_in_lunar[2], zoom_in_lunar[3], zoom_in_lunar[4], zoom_in_lunar[5])
+        zoom_in_lunar = lpaner.keep_chosen_data(zoom_in_lunar[1], zoom_in_lunar[2], zoom_in_lunar[3], zoom_in_lunar[4], zoom_in_lunar[5], zoom_in_lunar[6], zoom_in_lunar[7])
         
 def map_legend():
     #1050
