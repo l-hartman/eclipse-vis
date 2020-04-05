@@ -20,6 +20,10 @@ class LunarPane(object):
         self.display_wait = 20;
         self.total_wait = 100;
         
+        self.total_ecl = loadImage("../images/total_eclipse.png")
+        self.partial_ecl = loadImage("../images/Partial_lunar.png")
+        self.penumbral_ecl = loadImage("../images/Penumbral.png")
+        
 
     def render(self,la):
         #rect
@@ -40,17 +44,24 @@ class LunarPane(object):
         textSize(15)
         self.eclipse_text = []
         for eclipse in self.lunar_data:
-            text("Eclipse " + str(x), self.x + (x*100), self.y + self.h + 15)
-            self.eclipse_text.append([self.x + (x*100), self.y + self.h + 15])
+            if x < 3:
+                self.eclipse_text.append([self.x + (x*100), self.y + self.h + 15])
+                text("Eclipse " + str(x), self.x + (x*100), self.y + self.h + 15)
+            else:
+                #special case of 4 lunar eclipses
+                self.eclipse_text.append([self.x, self.y + self.h + 35])
+                text("Eclipse " + str(x), self.x , self.y + self.h + 35)
             x += 1
             
     def hover_check(self,mX,mY):
         fill(0,0,255)
         x = 0
         for ecl in self.eclipse_text:
-            if mX > ecl[0] and mX < ecl[0] + 70 and mY > ecl[1] - 15 and mY < ecl[1] + 15:  
-                text("Eclipse " + str(x), self.x + (x*100), self.y + self.h + 15)
-           
+            if mX > ecl[0] and mX < ecl[0] + 70 and mY > ecl[1] - 10 and mY < ecl[1] + 10: 
+                if x < 3: 
+                    text("Eclipse " + str(x), self.x + (x*100), self.y + self.h + 15)
+                else:
+                    text("Eclipse " + str(x), self.x , self.y + self.h + 35)
             x += 1
 
     def handle_eclipse_onlick(self,mX,mY):
@@ -74,8 +85,6 @@ class LunarPane(object):
         #long 12
         #eclipse type #6
         
-
-        
         time = millis()
         while self.total_wait > 0:
            
@@ -94,21 +103,14 @@ class LunarPane(object):
              self.earth_x_y[1] += 1.2
              image(self.earth,self.earth_x_y[0],self.earth_x_y[1],sizeX_earth,sizeY_earth)
              
-             #move moon in a circle
-             #image(self.moon,self.moon_x_y[0],self.moon_x_y[1],sizeX_moon,sizeY_moon)
-        
-             
              return [1, data, sizeX_sun, sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
                 
-        
         self.total_wait = 100
         return [2, data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
     
     def keep_chosen_data(self,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon):
         image(self.sun,self.sun_x_y[0],self.sun_x_y[1],sizeX_sun,sizeY_sun)
         image(self.earth,self.earth_x_y[0],self.earth_x_y[1],sizeX_earth,sizeY_earth)
-        
-
         
         #draw Penumbra lines
         stroke(255)
@@ -126,24 +128,32 @@ class LunarPane(object):
         else:
             e_type = data[6][0]
         
+        stroke(0)
+        fill(255)
+        rect(20,475,250,250)
+        
         #Display moon position
         if e_type == 'T':
             image(self.moon, 473 , 560, sizeX_moon,sizeY_moon)
+            type = "total"
+            image(self.total_ecl, 180, 640, 75, 75)
         elif e_type == 'P':
             image(self.moon, 480 , 575, sizeX_moon,sizeY_moon)
+            type = "partial"
+            image(self.partial_ecl, 180, 640, 75, 75)
         else:
             image(self.moon, 485 , 590, sizeX_moon,sizeY_moon)
-        
-        
-        return [2,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
-       
+            type="penumbral"
+            image(self.penumbral_ecl, 180, 640, 75, 75)
         
 
+        fill(0)
+        text("On " + data[1] + " there will be a \n" + type + " eclipse at " + data[2] + "." + 
+             " A\nlunar eclipse is when the earth\npasses in between the sun and\nthe moon and " + 
+             "the earths shadow\nis cast on the moon. With\na " + type + " eclipse you\ncan expect " +
+             "it to look\nsimilar to the this\nimage."
+             ,22,495)
         
-            
-        
-        
-        
-        
+        return [2,data,sizeX_sun,sizeY_sun, sizeX_earth, sizeY_earth, sizeX_moon, sizeY_moon]
         
         
