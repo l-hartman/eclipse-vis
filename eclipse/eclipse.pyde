@@ -1,6 +1,7 @@
 import description_pane as dp
 import search_bar as sb
 import lunar_pane as lp
+import solar_pane as sp
 
 my_map = None
 lunar_arr = []
@@ -10,9 +11,12 @@ solar_data = None
 searcher = None
 lpaner = None
 draw_l_years = False
+draw_s_years = False
 dpane = None
+spaner = False
 
 zoom_in_lunar = [0]
+zoom_in_solar = [0]
 
 
 def setup():
@@ -22,6 +26,7 @@ def setup():
     global searcher
     global lpaner
     global dpane
+    global spaner
     
     lunar_data = load_lunar_data("../data/lunar.csv")
     solar_data = load_solar_data("../data/solar.csv")
@@ -33,6 +38,7 @@ def setup():
     searcher = sb.SearchBar()
     lpaner = lp.LunarPane(300,450,300,300)
     dpane = dp.DescriptionPane(20, 70, 250, 330)
+    spaner = sp.SolarPane(750,450,300,300)
     
 def draw():
     #Search bar
@@ -42,8 +48,11 @@ def draw():
     global searcher
     global lpaner
     global draw_l_years
+    global draw_s_years
     global zoom_in_lunar
+    global zoom_in_solar
     global dpane
+    global spaner
         
     background(150)
     #Mapping
@@ -54,11 +63,12 @@ def draw():
 
     map_lunar_points(lunar_arr)
     map_solar_points(solar_arr)
-    solar_area_rect()
+    #solar_area_rect()
 
     dpane.render()
     searcher.render()
     lpaner.render(lunar_arr)
+    spaner.render(solar_arr)
     
     if draw_l_years:
         lpaner.year_eclipses()
@@ -68,6 +78,16 @@ def draw():
         zoom_in_lunar = lpaner.load_chosen_data(zoom_in_lunar[1], zoom_in_lunar[2], zoom_in_lunar[3], zoom_in_lunar[4], zoom_in_lunar[5], zoom_in_lunar[6], zoom_in_lunar[7])
     elif zoom_in_lunar[0] == 2:
         zoom_in_lunar = lpaner.keep_chosen_data(zoom_in_lunar[1], zoom_in_lunar[2], zoom_in_lunar[3], zoom_in_lunar[4], zoom_in_lunar[5], zoom_in_lunar[6], zoom_in_lunar[7])
+        
+    if draw_s_years:
+        spaner.year_eclipses()
+    spaner.hover_check(mouseX, mouseY)
+    
+    if zoom_in_solar[0] == 1:
+        zoom_in_solar = spaner.load_chosen_data(zoom_in_solar[1], zoom_in_solar[2], zoom_in_solar[3], zoom_in_solar[4], zoom_in_solar[5], zoom_in_solar[6], zoom_in_solar[7])
+    elif zoom_in_solar[0] == 2:
+        zoom_in_solar = spaner.keep_chosen_data(zoom_in_solar[1], zoom_in_solar[2], zoom_in_solar[3], zoom_in_solar[4], zoom_in_solar[5], zoom_in_solar[6], zoom_in_solar[7])
+        
         
 def map_legend():
     #1050
@@ -104,9 +124,9 @@ def lunar_area_text():
     textAlign(CENTER)
     text('Lunar',450,445)
     
-def solar_area_rect():
-    fill(255)
-    rect(750,450,300,300)
+#def solar_area_rect():
+#    fill(255)
+#    rect(750,450,300,300)
 
 def solar_area_text():
     fill(0)
@@ -142,16 +162,20 @@ def map_solar_points(solar_arr):
 
 def mouseClicked():
     global zoom_in_lunar
+    global zoom_in_solar
     searcher.handle_toggle_onclick(mouseX, mouseY)
     zoom_in_lunar = lpaner.handle_eclipse_onlick(mouseX, mouseY)
+    zoom_in_solar = spaner.handle_eclipse_onclick(mouseX,mouseY)
 
 def keyPressed():
     global draw_l_years
+    global draw_s_years
     if searcher.toggled:
         if key == "\n":
             lunar_year(searcher.cur_val)
             solar_year(searcher.cur_val)
             draw_l_years = True
+            draw_s_years = True
             redraw()
         elif key == '\b':
             searcher.cur_val = searcher.cur_val[:-1]
