@@ -1,6 +1,9 @@
 # eclipse-vis
 Final project for CPSC 313: Data Visualizations
 
+
+# Image Links
+
 **lunar eclipse images:** <br/>
 total eclipse: https://solarsystem.nasa.gov/news/299/10-things-to-know-about-the-total-lunar-eclipse-on-jan-31/ <br/>
 partial: https://apod.nasa.gov/apod/ap170809.html <br/>
@@ -11,3 +14,15 @@ total_solar: https://www.nasa.gov/press-release/nasa-to-livestream-south-america
 partial_solar: https://www.nasa.gov/mission_pages/sunearth/news/gallery/120221-eclipse.html <br/>
 annular_solar: https://www.nasa.gov/audience/forstudents/k-4/stories/annular-eclipse <br/>
 hybrid: https://apod.nasa.gov/apod/ap131103.html <br/>
+
+**Map image**
+https://en.wikipedia.org/wiki/Equirectangular_projection#/media/File:Equirectangular_projection_SW.jpg
+
+**Moon image**
+https://unsplash.com/photos/9dTg44Qhx1Q
+
+**Sun image**
+https://www.extremetech.com/wp-content/uploads/2020/01/NASA-Sun.jpg
+
+**Earth image**
+https://d7hftxdivxxvm.cloudfront.net/?resize_to=width&src=https%3A%2F%2Fartsy-media-uploads.s3.amazonaws.com%2FFuy6wmkJVPMkYwQI_sKvdg%252FThe%2BBlue%2BMarble%252C%2B1972.jpg&width=1200&quality=80
