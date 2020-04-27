@@ -2,6 +2,7 @@ import description_pane as dp
 import search_bar as sb
 import lunar_pane as lp
 import solar_pane as sp
+import calendar
 
 my_map = None
 lunar_arr = []
@@ -27,11 +28,12 @@ def setup():
     global lpaner
     global dpane
     global spaner
+    global cal
     
     lunar_data = load_lunar_data("../data/lunar.csv")
     solar_data = load_solar_data("../data/solar.csv")
     
-    size(1200,800)
+    size(1200,1000)
     
     my_map = loadImage("../images/Map.jpg")
 
@@ -39,6 +41,7 @@ def setup():
     lpaner = lp.LunarPane(300,450,300,300)
     dpane = dp.DescriptionPane(20, 70, 250, 330)
     spaner = sp.SolarPane(750,450,300,300)
+    cal = calendar.Calendar("../images/calendar.png")
     
 def draw():
     #Search bar
@@ -64,7 +67,7 @@ def draw():
     map_lunar_points(lunar_arr)
     map_solar_points(solar_arr)
     #solar_area_rect()
-
+    cal.render()
     dpane.render()
     searcher.render()
     lpaner.render(lunar_arr)
