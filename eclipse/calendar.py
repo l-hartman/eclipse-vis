@@ -6,4 +6,7 @@ class Calendar(object):
     def render(self):
         image(self.img, 300, 800)
         
+    def draw_eclipse(self):
+        pass
+        
         

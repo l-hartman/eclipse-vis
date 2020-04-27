@@ -13,7 +13,7 @@ class SearchBar(object):
                 text_color="#000000",
                 init_val="click",
                 max_chars=5,
-                title="Enter a year"):
+                title="Enter a year between -1999 and 3000"):
         self.x = x
         self.y = y
         self.w = w
