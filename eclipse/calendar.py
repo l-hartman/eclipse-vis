@@ -5,6 +5,7 @@ class Calendar(object):
         
     def render(self):
         image(self.img, 300, 800)
+        text("Calendar", 675, 795)
         
     def draw_eclipse(self):
         pass
