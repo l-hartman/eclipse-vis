@@ -36,7 +36,7 @@ class DescriptionPane(object):
         'Total Eclipse Duration (m)'
     ]
     
-    def __init__(self,x, y, w, h):
+    def __init__(self,x, y, w, h, cal):
         self.x = x
         self.y = y
         self.w = w
@@ -47,6 +47,7 @@ class DescriptionPane(object):
         # is current description for a lunar or solar eclipse?
         self.eclipse_type = ""
         self.cur_id = ""
+        self.cal = cal
 
     def render(self):
         fill(255)
@@ -68,6 +69,7 @@ class DescriptionPane(object):
             for i in range(len(DescriptionPane.solar_attributes)):
                 text(DescriptionPane.solar_attributes[i] + " " + self.current_data[i], 22, y_cord)
                 y_cord += 20
+            self.cal.update(self.current_data[1], "l")
         elif self.eclipse_type == "solar":
             textAlign(LEFT)
             textSize(15)
@@ -77,3 +79,4 @@ class DescriptionPane(object):
             for i in range(len(DescriptionPane.solar_attributes)):
                 text(DescriptionPane.solar_attributes[i] + ": " + self.current_data[i], 22, y_cord)
                 y_cord += 20
+            self.cal.update(self.current_data[1], "s")

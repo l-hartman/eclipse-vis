@@ -36,12 +36,12 @@ def setup():
     size(1200,1000)
     
     my_map = loadImage("../images/Map.jpg")
-
+    
+    cal = calendar.Calendar("../images/calendar.png")
     searcher = sb.SearchBar()
     lpaner = lp.LunarPane(300,450,300,300)
-    dpane = dp.DescriptionPane(20, 70, 250, 330)
+    dpane = dp.DescriptionPane(20, 70, 250, 330, cal)
     spaner = sp.SolarPane(750,450,300,300)
-    cal = calendar.Calendar("../images/calendar.png")
     
 def draw():
     #Search bar
