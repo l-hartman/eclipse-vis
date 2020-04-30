@@ -1,3 +1,4 @@
+# Names: Reid Whitson and Luke Hartman
 import description_pane as dp
 import search_bar as sb
 import lunar_pane as lp
