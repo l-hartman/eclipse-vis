@@ -1,5 +1,8 @@
 # eclipse-vis
-Final project for CPSC 313: Data Visualizations
+Final project for CPSC 313: Data Visualizations.
+
+## TO RUN
+To run you will need to change to Python mode within processing. To do this, go to the top right where it says 'java' and click 'Add Mode' and then add Python. Once it is added you can choose it and then run our project.
 
 
 # Image Links
